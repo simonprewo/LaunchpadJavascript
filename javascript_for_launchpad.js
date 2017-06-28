@@ -7,7 +7,14 @@ var handlingOTConLaunchpad = {
 
 	cloneApps: function(data, filterapplicationid, tcotcbasisurl) {
 		var firstitemdet = true;
-		var initialOTCElement = $( 'div[appid='+filterapplicationid+'].myapp-body' ).parent();
+		var initialOTCElement = null;
+		for (var waitExist = 1; waitExist < 50; waitExist++) {
+			if ( $( 'div[appid='+filterapplicationid+'].myapp-body' ).length ) {
+				initialOTCElement = $( 'div[appid='+filterapplicationid+'].myapp-body' ).parent();
+				break;
+			}
+			setTimeout(function(){}, waitExist * 10);
+		}
 		for (var counterForApps = 0; counterForApps < data.content.length; counterForApps++) {
 			var currentApp = data.content[counterForApps];
 			if (currentApp.applicationId != null && currentApp.applicationId == filterapplicationid){
@@ -24,6 +31,7 @@ var handlingOTConLaunchpad = {
 					var tentxtfirst = currentApp.companyEntitlementExternalVendorIdentifier;
 					initialOTCElement.find("div.status-title").text(tentxtfirst);
 					initialOTCElement.find("div.status-title").css("font-size", "15px");
+					initialOTCElement.find("a.myapps-assign-users").parent().css("display", "none");
 				}
 				firstitemdet = false;
 				}
@@ -70,7 +78,7 @@ var firstitemdet = true;
 			tcmyappsapiurl = tcmyappsapibasisurl+tcmyappscompid+"/memberships/"+tcmyappsusid+"/myapps";
 			$.get(tcmyappsapiurl, function( data ) { handlingOTConLaunchpad.cloneApps(data,  filterapplicationid, tcotcbasisurl)}, 'json');
 		});
-	},1200);
+	},900);
 });
 /* END OTC add myapps multiple items */
 </script>
