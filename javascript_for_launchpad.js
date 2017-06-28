@@ -31,10 +31,11 @@ var handlingOTConLaunchpad = {
 					var tentxtfirst = currentApp.companyEntitlementExternalVendorIdentifier;
 					initialOTCElement.find("div.status-title").text(tentxtfirst);
 					initialOTCElement.find("div.status-title").css("font-size", "15px");
-					initialOTCElement.find("a.myapps-assign-users").parent().css("display", "none");
+					initialOTCElement.find("a.myapps-assign-users").parent().remove();
+					handlingOTConLaunchpad.removeStringStarten(initialOTCElement.find("div.myapps-image"));
 				}
 				firstitemdet = false;
-				}
+			}
 		}
 	},
 	
@@ -47,14 +48,26 @@ var handlingOTConLaunchpad = {
 		});
 		clonedItem.find("a.myapps-settings").click(function(event) {
 			$(this).closest("div.myapps-item").find("div.myapps-settings-menu").toggle();
-			$(this).closest("div.myapps-item").find("div.myapps-settings-menu").css({top: 108, left: 91, position:'absolute'});
+			if ( clonedItem.find("a.myapps-assign-users").length ) {
+				$(this).closest("div.myapps-item").find("div.myapps-settings-menu").css({top: 108, left: 91, position:'absolute'});
+			} else {
+				$(this).closest("div.myapps-item").find("div.myapps-settings-menu").css({top: 148, left: 91, position:'absolute'});
+			}
 			event.stopPropagation();
 		});
-		clonedItem.find("a.myapps-assign-users").attr("href", assignUsersURL);
+		if ( clonedItem.find("a.myapps-assign-users").length ) {
+			clonedItem.find("a.myapps-assign-users").attr("href", assignUsersURL);
+		}
 		clonedItem.find("a.myapps-manage-app").attr("href", manageAppURL);
 		clonedItem.find("div.status-title").text(title);
 		/* insert new myapps item */
 		clonedItem.appendTo( $("#myappsCollectionView").last()).show();
+	},
+	
+	removeStringStarten: function(elementToRemoveFromTitle) {
+		var title = elementToRemoveFromTitle.attr("title");
+		title = title.replace('starten','');
+		elementToRemoveFromTitle.attr("title", title)
 	}
 	
 };
