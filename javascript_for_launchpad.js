@@ -8,50 +8,57 @@ var handlingOTConLaunchpad = {
 	cloneApps: function(data, filterapplicationid, tcotcbasisurl) {
 		var tcposition = [];
 		var firstitemdet = true;
-			for (var counti = 0; counti < data.content.length; counti++) {
-				if (data.content[counti].applicationId != null && data.content[counti].applicationId == filterapplicationid){
-					tcposition.push(counti);
-					if (firstitemdet == false){
-						if (data.content[counti].partner === "DEUTSCHE"){
-							tcappdchannel= "ADT-TDG";
-						}else{
-							tcappdchannel= "ADT-TSI";
-						}
-						tcotcurl = tcotcbasisurl+tcappdchannel+"&xdomain_id="+data.content[counti].companyEntitlementExternalVendorIdentifier;
-						/* clone myapps item */
-						$tcappitem = $( "#myappsCollectionView div.myapps-item").eq(tcposition[0]+1).clone(false, false);
-						$tcappitem.find("div.myapps-settings-menu").addClass("tctoggle");
-						$tcappitem.find("div.myapp-body").click(function(e) {
-							window.open(tcotcurl, '_blank');
-						});
-						$tcappitem.find("a.myapps-settings").click(function(event) {
-							$(this).closest("div.myapps-item").find("div.myapps-settings-menu").toggle();
-							$(this).closest("div.myapps-item").find("div.myapps-settings-menu").css({top: 108, left: 91, position:'absolute'});
-							event.stopPropagation();
-						});
-						$tcappitem.find("a.myapps-assign-users").attr("href", data.content[counti].assignUrl);
-						$tcappitem.find("a.myapps-manage-app").attr("href", data.content[counti].manageUrl);
-						var tentxt = data.content[counti].companyEntitlementExternalVendorIdentifier;
-						$tcappitem.find("div.status-title").text(tentxt);
-						/* insert new myapps item */
-						$tcappitem.appendTo( $("#myappsCollectionView").last()).show();
+		for (var counterForApps = 0; counterForApps < data.content.length; counterForApps++) {
+			var currentApp = data.content[counterForApps];
+			if (currentApp.applicationId != null && currentApp.applicationId == filterapplicationid){
+				tcposition.push(counterForApps);
+				if (firstitemdet == false){
+					if (currentApp.partner === "DEUTSCHE"){
+						tcappdchannel= "ADT-TDG";
 					} else {
-						var tentxtfirst = data.content[counti].companyEntitlementExternalVendorIdentifier;
-						$( "#myappsCollectionView div.myapps-item").eq(tcposition[0]+1).find("div.status-title").text(tentxtfirst);
+						tcappdchannel= "ADT-TSI";
 					}
-					firstitemdet = false;
-					}
+					tcotcurl = tcotcbasisurl+tcappdchannel+"&xdomain_id="+data.content[counterForApps].companyEntitlementExternalVendorIdentifier;
+					/* clone myapps item */
+					toBeCloned = $( "#myappsCollectionView div.myapps-item").eq(tcposition[0]+1);
+					handlingOTConLaunchpad.cloneLaunchPadItem(toBeCloned, currentApp.assignUrl, currentApp.manageUrl, currentApp.companyEntitlementExternalVendorIdentifier);
+				} else {
+					var tentxtfirst = currentApp.companyEntitlementExternalVendorIdentifier;
+					$( "#myappsCollectionView div.myapps-item").eq(tcposition[0]+1).find("div.status-title").text(tentxtfirst);
 				}
-			}
-	};
+				firstitemdet = false;
+				}
+		}
+	},
+	
+	cloneLaunchPadItem: function(itemToBeCloned, assignUsersURL, manageAppURL, title) {
+		/* clone myapps item */
+		clonedItem = itemToBeCloned.clone(false, false);
+		clonedItem.find("div.myapps-settings-menu").addClass("tctoggle");
+		clonedItem.find("div.myapp-body").click(function(e) {
+			window.open(tcotcurl, '_blank');
+		});
+		clonedItem.find("a.myapps-settings").click(function(event) {
+			$(this).closest("div.myapps-item").find("div.myapps-settings-menu").toggle();
+			$(this).closest("div.myapps-item").find("div.myapps-settings-menu").css({top: 108, left: 91, position:'absolute'});
+			event.stopPropagation();
+		});
+		clonedItem.find("a.myapps-assign-users").attr("href", assignUsersURL);
+		clonedItem.find("a.myapps-manage-app").attr("href", manageAppURL);
+		clonedItem.find("div.status-title").text(title);
+		/* insert new myapps item */
+		clonedItem.appendTo( $("#myappsCollectionView").last()).show();
+	}
+	
+};
 
 $( document ).ready(function() {
 /* OTC add myapps multiple items */
 /* set OTC applicationid and urls */
 var filterapplicationid = "2525";
-tcotcbasisurl = "https://auth.otctest.t-systems.com/authui/saml/login?xdomain_type=";
-tcmyappsapiuserurl = "https://wellstein.bmptest.de/api/account/v1/userinfo.json";
-tcmyappsapibasisurl = "https://wellstein.bmptest.de/api/account/v2/companies/";
+tcotcbasisurl = "";
+tcmyappsapiuserurl = "";
+tcmyappsapibasisurl = "";
 /* END set OTC applicationid and urls */	
 
 var firstitemdet = true;
