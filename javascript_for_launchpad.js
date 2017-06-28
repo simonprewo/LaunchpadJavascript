@@ -23,6 +23,7 @@ var handlingOTConLaunchpad = {
 				} else {
 					var tentxtfirst = currentApp.companyEntitlementExternalVendorIdentifier;
 					initialOTCElement.find("div.status-title").text(tentxtfirst);
+					initialOTCElement.find("div.status-title").css("font-size", "15px");
 				}
 				firstitemdet = false;
 				}
