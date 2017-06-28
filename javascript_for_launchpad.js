@@ -1,6 +1,7 @@
 <script type="text/javascript">
 
 $( document ).ready(function() {
+ setTimeout(function(){ 
  /* OTC add myapps multiple items */
  /* set OTC applicationid and urls */
  var filterapplicationid = "2525";
@@ -53,6 +54,7 @@ $( document ).ready(function() {
         }
     },'json');
  });
+ },1200);
 });
 /* END OTC add myapps multiple items */
 </script>
