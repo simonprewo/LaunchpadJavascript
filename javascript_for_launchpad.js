@@ -6,12 +6,11 @@
 var handlingOTConLaunchpad = {
 
 	cloneApps: function(data, filterapplicationid, tcotcbasisurl) {
-		var tcposition = [];
 		var firstitemdet = true;
+		var initialOTCElement = $( 'div[appid='+filterapplicationid+'].myapp-body' ).parent();
 		for (var counterForApps = 0; counterForApps < data.content.length; counterForApps++) {
 			var currentApp = data.content[counterForApps];
 			if (currentApp.applicationId != null && currentApp.applicationId == filterapplicationid){
-				tcposition.push(counterForApps);
 				if (firstitemdet == false){
 					if (currentApp.partner === "DEUTSCHE"){
 						tcappdchannel= "ADT-TDG";
@@ -20,11 +19,10 @@ var handlingOTConLaunchpad = {
 					}
 					tcotcurl = tcotcbasisurl+tcappdchannel+"&xdomain_id="+data.content[counterForApps].companyEntitlementExternalVendorIdentifier;
 					/* clone myapps item */
-					toBeCloned = $( "#myappsCollectionView div.myapps-item").eq(tcposition[0]+1);
-					handlingOTConLaunchpad.cloneLaunchPadItem(toBeCloned, currentApp.assignUrl, currentApp.manageUrl, currentApp.companyEntitlementExternalVendorIdentifier);
+					handlingOTConLaunchpad.cloneLaunchPadItem(initialOTCElement, currentApp.assignUrl, currentApp.manageUrl, currentApp.companyEntitlementExternalVendorIdentifier);
 				} else {
 					var tentxtfirst = currentApp.companyEntitlementExternalVendorIdentifier;
-					$( "#myappsCollectionView div.myapps-item").eq(tcposition[0]+1).find("div.status-title").text(tentxtfirst);
+					initialOTCElement.find("div.status-title").text(tentxtfirst);
 				}
 				firstitemdet = false;
 				}
