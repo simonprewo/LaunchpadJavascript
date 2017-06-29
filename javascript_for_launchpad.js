@@ -1,8 +1,5 @@
 <script type="text/javascript">
 
-
- /* END set OTC applicationid and urls */
- 
 var handlingOTConLaunchpad = {
 
 	cloneApps: function(data, filterapplicationid, tcotcbasisurl) {
@@ -19,14 +16,14 @@ var handlingOTConLaunchpad = {
 			var currentApp = data.content[counterForApps];
 			if (currentApp.applicationId != null && currentApp.applicationId == filterapplicationid){
 				if (firstitemdet == false){
+					var tcappdchannel = "";
 					if (currentApp.partner === "DEUTSCHE"){
 						tcappdchannel= "ADT-TDG";
 					} else {
 						tcappdchannel= "ADT-TSI";
 					}
-					tcotcurl = tcotcbasisurl+tcappdchannel+"&xdomain_id="+data.content[counterForApps].companyEntitlementExternalVendorIdentifier;
-					/* clone myapps item */
-					handlingOTConLaunchpad.cloneLaunchPadItem(initialOTCElement, currentApp.assignUrl, currentApp.manageUrl, currentApp.companyEntitlementExternalVendorIdentifier);
+					var tcotcurl = tcotcbasisurl+tcappdchannel+"&xdomain_id="+currentApp.companyEntitlementExternalVendorIdentifier;
+					handlingOTConLaunchpad.cloneLaunchPadItem(initialOTCElement, currentApp.assignUrl, currentApp.manageUrl, currentApp.companyEntitlementExternalVendorIdentifier, tcotcurl);
 				} else {
 					var tentxtfirst = currentApp.companyEntitlementExternalVendorIdentifier;
 					initialOTCElement.find("div.status-title").text(tentxtfirst);
@@ -39,12 +36,11 @@ var handlingOTConLaunchpad = {
 		}
 	},
 	
-	cloneLaunchPadItem: function(itemToBeCloned, assignUsersURL, manageAppURL, title) {
-		/* clone myapps item */
+	cloneLaunchPadItem: function(itemToBeCloned, assignUsersURL, manageAppURL, title, otcLink) {
 		clonedItem = itemToBeCloned.clone(false, false);
 		clonedItem.find("div.myapps-settings-menu").addClass("tctoggle");
 		clonedItem.find("div.myapp-body").click(function(e) {
-			window.open(tcotcurl, '_blank');
+			window.open(otcLink, '_blank');
 		});
 		clonedItem.find("a.myapps-settings").click(function(event) {
 			$(this).closest("div.myapps-item").find("div.myapps-settings-menu").toggle();
@@ -60,7 +56,6 @@ var handlingOTConLaunchpad = {
 		}
 		clonedItem.find("a.myapps-manage-app").attr("href", manageAppURL);
 		clonedItem.find("div.status-title").text(title);
-		/* insert new myapps item */
 		clonedItem.appendTo( $("#myappsCollectionView").last()).show();
 	},
 	
@@ -73,15 +68,13 @@ var handlingOTConLaunchpad = {
 };
 
 $( document ).ready(function() {
-/* OTC add myapps multiple items */
-/* set OTC applicationid and urls */
+/* BEGIN CONFIGURATION */
 var filterapplicationid = "2525";
 tcotcbasisurl = "";
 tcmyappsapiuserurl = "";
 tcmyappsapibasisurl = "";
-/* END set OTC applicationid and urls */	
+/* END CONFIGURATION */
 
-var firstitemdet = true;
 	setTimeout(function() {
 		$.get(tcmyappsapiuserurl,function(dat){
 			tcmyappscompid = dat.company_id;
@@ -93,5 +86,4 @@ var firstitemdet = true;
 		});
 	},900);
 });
-/* END OTC add myapps multiple items */
 </script>
