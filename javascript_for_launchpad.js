@@ -15,14 +15,14 @@ var handlingOTConLaunchpad = {
 		for (var counterForApps = 0; counterForApps < data.content.length; counterForApps++) {
 			var currentApp = data.content[counterForApps];
 			if (currentApp.applicationId != null && currentApp.applicationId == filterapplicationid){
+				var tcappdchannel = "";
+				if (currentApp.partner === "DEUTSCHE"){
+					tcappdchannel= "ADT-TDG";
+				} else {
+					tcappdchannel= "ADT-TSI";
+				}
+				var tcotcurl = tcotcbasisurl+tcappdchannel+"&xdomain_id="+currentApp.companyEntitlementExternalVendorIdentifier;
 				if (firstitemdet == false){
-					var tcappdchannel = "";
-					if (currentApp.partner === "DEUTSCHE"){
-						tcappdchannel= "ADT-TDG";
-					} else {
-						tcappdchannel= "ADT-TSI";
-					}
-					var tcotcurl = tcotcbasisurl+tcappdchannel+"&xdomain_id="+currentApp.companyEntitlementExternalVendorIdentifier;
 					handlingOTConLaunchpad.cloneLaunchPadItem(initialOTCElement, currentApp.assignUrl, currentApp.manageUrl, currentApp.companyEntitlementExternalVendorIdentifier, tcotcurl);
 				} else {
 					var tentxtfirst = currentApp.companyEntitlementExternalVendorIdentifier;
@@ -30,6 +30,9 @@ var handlingOTConLaunchpad = {
 					initialOTCElement.find("div.status-title").css("font-size", "15px");
 					initialOTCElement.find("a.myapps-assign-users").parent().remove();
 					handlingOTConLaunchpad.removeStringStarten(initialOTCElement.find("div.myapps-image"));
+					initialOTCElement.find("div.myapp-body").click(function(e) {
+						window.open(tcotcurl, '_blank');
+					});
 				}
 				firstitemdet = false;
 			}
