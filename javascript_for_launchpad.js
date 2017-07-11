@@ -39,9 +39,6 @@ var handlingOTConLaunchpad = {
 	cloneLaunchPadItem: function(itemToBeCloned, assignUsersURL, manageAppURL, title, otcLink) {
 		clonedItem = itemToBeCloned.clone(false, false);
 		clonedItem.find("div.myapps-settings-menu").addClass("tctoggle");
-		clonedItem.find("div.myapp-body").click(function(e) {
-			window.open(otcLink, '_blank');
-		});
 		handlingOTConLaunchpad.setOtcLink(clonedItem, otcLink);
 		if ( clonedItem.find("a.myapps-assign-users").length ) {
 			clonedItem.find("a.myapps-assign-users").attr("href", assignUsersURL);
