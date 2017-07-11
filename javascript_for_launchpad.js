@@ -52,8 +52,7 @@ var handlingOTConLaunchpad = {
 	},
 	
 	setOtcLink: function(otcItem, otcLink) {
-	    otcItem.find("div.myapp-body").parent().off();
-		otcItem.find("div.myapp-body").off().click(function(e) {
+		otcItem.find("div.myapp-body").parent().off().click(function(e) {
 			window.open(otcLink, '_blank');
 		});
 		otcItem.find("a.myapps-settings").click(function(event) {
