@@ -52,7 +52,8 @@ var handlingOTConLaunchpad = {
 	},
 	
 	setOtcLink: function(otcItem, otcLink) {
-		otcItem.find("div.myapp-body").click(function(e) {
+	    otcItem.find("div.myapp-body").parent().off();
+		otcItem.find("div.myapp-body").off().click(function(e) {
 			window.open(otcLink, '_blank');
 		});
 		otcItem.find("a.myapps-settings").click(function(event) {
@@ -97,6 +98,6 @@ tcmyappsapibasisurl = "";
 			tcmyappsapiurl = tcmyappsapibasisurl+tcmyappscompid+"/memberships/"+tcmyappsusid+"/myapps";
 			$.get(tcmyappsapiurl, function( data ) { handlingOTConLaunchpad.cloneApps(data,  filterapplicationid, tcotcbasisurl)}, 'json');
 		});
-	},900);
+	},1100);
 });
 </script>
