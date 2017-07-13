@@ -12,6 +12,9 @@ var handlingOTConLaunchpad = {
 			}
 			setTimeout(function(){}, waitExist * 10);
 		}
+		if ( initialOTCElement.find("div.myapp-body").attr("class").indexOf("myapp-suspended") != -1) {
+			return false;
+		}
 		handlingOTConLaunchpad.cleanUpInitialElement(initialOTCElement);
 		for (var counterForApps = 0; counterForApps < data.content.length; counterForApps++) {
 			var currentApp = data.content[counterForApps];
@@ -66,8 +69,10 @@ var handlingOTConLaunchpad = {
 	
 	removeStringStarten: function(elementToRemoveFromTitle) {
 		var title = elementToRemoveFromTitle.attr("title");
-		title = title.replace('starten','');
-		elementToRemoveFromTitle.attr("title", title)
+		if (typeof title !== typeof undefined && title !== false) {
+			title = title.replace('starten','');
+			elementToRemoveFromTitle.attr("title", title)			
+		}
 	},
 	
 	cleanUpInitialElement: function(initialOTCElement) {
