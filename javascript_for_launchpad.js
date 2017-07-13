@@ -12,6 +12,9 @@ var handlingOTConLaunchpad = {
 			}
 			setTimeout(function(){}, waitExist * 10);
 		}
+		if (typeof(initialOTCElement) == 'undefined' || initialOTCElement == null) { 
+			return false;
+		}
 		if ( initialOTCElement.find("div.myapp-body").attr("class").indexOf("myapp-suspended") != -1) {
 			return false;
 		}
@@ -83,6 +86,7 @@ var handlingOTConLaunchpad = {
 	
 };
 
+
 $( document ).ready(function() {
 /* BEGIN CONFIGURATION */
 var filterapplicationid = "2525";
@@ -90,6 +94,7 @@ tcotcbasisurl = "";
 tcmyappsapiuserurl = "";
 tcmyappsapibasisurl = "";
 /* END CONFIGURATION */
+
 
 	setTimeout(function() {
 		$.get(tcmyappsapiuserurl,function(dat){
@@ -102,4 +107,7 @@ tcmyappsapibasisurl = "";
 		});
 	},1100);
 });
+
+
+/* END OF OTC MULTIPLIER */
 </script>
