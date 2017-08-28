@@ -12,6 +12,9 @@ var handlingOTConLaunchpad = {
 					return;
 			}
 			$.each(data.content, function(i, value) {
+			    if (typeof myAppElement.parent().find("a.myapps-manage-app") == typeof undefined || myAppElement.parent().find("a.myapps-manage-app") == false || myAppElement.parent().find("a.myapps-manage-app").length == 0) {
+			        return;
+		        }
 				if (myAppElement.parent().find("a.myapps-manage-app").attr('href').indexOf(value.companyEntitlementId) >= 0) {
 					handlingOTConLaunchpad.setTitle(myAppElement, value.companyEntitlementExternalVendorIdentifier);
 					if (value.partner == "TSYSTEMS"){
