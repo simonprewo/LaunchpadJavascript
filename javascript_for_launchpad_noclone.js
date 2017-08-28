@@ -4,30 +4,23 @@ var handlingOTConLaunchpad = {
 
 	modifyApps: function(data, filterapplicationid, tcotcbasisurl) {
         $( 'div[appid='+filterapplicationid+'].myapp-body' ).each(function(iter, value) {
-            handlingOTConLaunchpad.removeStringStarten($(this).find("div.myapps-image"));
-			handlingOTConLaunchpad.removeManageUsersLink($(this).parent());
-
 			var myAppElement = $(this);
-			$.each(data.content, function(i, value) {
-				if (typeof myAppElement.parent().find("a.myapps-manage-app") == typeof undefined || myAppElement.parent().find("a.myapps-manage-app") == false) {
+            handlingOTConLaunchpad.removeStringStarten(myAppElement.find("div.myapps-image"));
+			handlingOTConLaunchpad.removeManageUsersLink(myAppElement.parent());
+			
+			if (typeof myAppElement.parent().find("a.myapps-manage-app") == typeof undefined || myAppElement.parent().find("a.myapps-manage-app") == false) {
 					return;
-				}
+			}
+			$.each(data.content, function(i, value) {
 				if (myAppElement.parent().find("a.myapps-manage-app").attr('href').indexOf(value.companyEntitlementId) >= 0) {
-					if (typeof myAppElement.find("div.status-title") == typeof undefined || myAppElement.find("div.status-title") == false) {
-						return;
+					handlingOTConLaunchpad.setTitle(myAppElement, value.companyEntitlementExternalVendorIdentifier);
+					if (value.partner == "TSYSTEMS"){
+						var tcotcurl = tcotcbasisurl+"ADT-TSI&xdomain_id="+value.companyEntitlementExternalVendorIdentifier;
+						handlingOTConLaunchpad.setOtcLink(myAppElement, tcotcurl);
 					}
-					myAppElement.find("div.status-title").text(value.companyEntitlementExternalVendorIdentifier);
-					myAppElement.find("div.status-title").css("font-size", "15px");
 					return;
 				}
 			});
-			/**var tcappdchannel = "";
-			
-			if (currentApp.partner !== "DEUTSCHE"){
-				tcappdchannel= "ADT-TSI";
-				var tcotcurl = tcotcbasisurl+tcappdchannel+"&xdomain_id="+currentApp.companyEntitlementExternalVendorIdentifier;
-				setOtcLink(myAppElement, tcotcurl);
-			}*/
         });
 	},
 		
@@ -44,6 +37,14 @@ var handlingOTConLaunchpad = {
 		otcItem.find("div.myapp-body").off().click(function(e) {
 			window.open(otcLink, '_blank');
 		});
+	},
+	
+	setTitle: function(myAppElement, title) {
+		if (typeof myAppElement.find("div.status-title") == typeof undefined || myAppElement.find("div.status-title") == false) {
+			return;
+		}
+		myAppElement.find("div.status-title").text(title);
+		myAppElement.find("div.status-title").css("font-size", "15px");
 	},
 	
 	removeManageUsersLink: function(oTCElement) {
